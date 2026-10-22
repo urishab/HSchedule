@@ -11,14 +11,17 @@ ol{list-style:none;margin:0;padding:0}li{display:flex;gap:10px;padding:5px 0;bor
 li:first-child{border-top:0}b{min-width:1.2em}time{color:var(--mut);min-width:3em;direction:ltr;text-align:right}
 small{color:var(--mut)}em{color:#c60;font-style:normal;font-size:13px}p{margin:0;color:var(--mut)}
 
-nav{padding:0 16px 4px}.chip{display:inline-block;padding:6px 18px;border-radius:99px;font-size:15px;
+nav{padding:0 16px 4px;display:flex;gap:8px}.chip{padding:6px 22px;border-radius:99px;font-size:15px;
 text-decoration:none;background:#8883;color:var(--mut)}a.chip[href]{background:var(--hi);color:#fff}
+.chip.cur{background:#1a9b4b;color:#fff}
 [hidden]{display:none}
-</style><body data-mode="main" data-today="today/" data-tomorrow="tomorrow/"><header><h1>מערכת ז 2</h1><span>עודכן 22.10 08:26</span></header><nav><a id="chip" class="chip" hidden></a></nav><section class="day" data-d="2026-10-22"><h2>יום חמישי 22.10</h2><ol><li><b>1</b><time>08:30</time><span>אנגלית <small>עמית אלמוג</small></span></li><li><b>2</b><time>09:15</time><span>אנגלית <small>עמית אלמוג</small></span></li><li><b>3</b><time>10:15</time><span>מתמטיקה <small>ארץ קדושה ליהי</small></span></li><li><b>4</b><time>11:00</time><span>מתמטיקה <small>ארץ קדושה ליהי</small></span></li><li><b>5</b><time>12:10</time><span>כימיה <small>שני אליענה</small></span></li><li><b>6</b><time>12:55</time><span>שעת מחנך <small>עמית אלמוג</small></span></li><li><b>7</b><time>13:50</time><span>כישורי חיים <small>שמש סמדי</small></span></li></ol></section><section id="none"><p>המערכת עדיין לא פורסמה</p></section><script>
+</style><body data-mode="main" data-today="./" data-tomorrow="tomorrow/"><header><h1>מערכת ז 2</h1><span>עודכן 22.10 08:45</span></header><nav><a id="b-today" class="chip" hidden>היום</a><a id="b-tomorrow" class="chip" hidden>מחר</a></nav><section class="day" data-d="2026-10-22"><h2>יום חמישי 22.10</h2><ol><li><b>1</b><time>08:30</time><span>אנגלית <small>עמית אלמוג</small></span></li><li><b>2</b><time>09:15</time><span>אנגלית <small>עמית אלמוג</small></span></li><li><b>3</b><time>10:15</time><span>מתמטיקה <small>ארץ קדושה ליהי</small></span></li><li><b>4</b><time>11:00</time><span>מתמטיקה <small>ארץ קדושה ליהי</small></span></li><li><b>5</b><time>12:10</time><span>כימיה <small>שני אליענה</small></span></li><li><b>6</b><time>12:55</time><span>שעת מחנך <small>עמית אלמוג</small></span></li><li><b>7</b><time>13:50</time><span>כישורי חיים <small>שמש סמדי</small></span></li></ol></section><section id="none"><p>המערכת עדיין לא פורסמה</p></section><script>
 function view(mode,t,h,have){
   var d=new Date(t+'T00:00:00Z');d.setUTCDate(d.getUTCDate()+1);var tm=d.toISOString().slice(0,10);
-  var show=mode=='today'?t:mode=='tomorrow'?tm:(h>=14&&have[tm]?tm:t),onToday=show==t;
-  return{show:show,chip:onToday?'tomorrow':'today',on:onToday?!!have[tm]:(h<20&&!!have[t])};
+  var go=mode=='main'&&h>=14&&have[tm];
+  var show=mode=='tomorrow'||go?tm:t,onT=show==t;
+  return{show:show,go:go,
+    today:onT?'cur':(h<23&&have[t]?'on':'off'),tomorrow:onT?(have[tm]?'on':'off'):'cur'};
 }
 (function(){
   var p={};new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Jerusalem',year:'numeric',month:'2-digit',
@@ -26,11 +29,12 @@ function view(mode,t,h,have){
   var b=document.body,have={},secs=[].slice.call(document.querySelectorAll('section.day'));
   secs.forEach(function(e){have[e.dataset.d]=1});
   var v=view(b.dataset.mode,p.year+'-'+p.month+'-'+p.day,+p.hour,have),any=false;
+  if(v.go){location.replace(b.dataset.tomorrow);return}
   secs.forEach(function(e){e.hidden=e.dataset.d!=v.show;if(!e.hidden)any=true});
   document.getElementById('none').hidden=any;
-  var c=document.getElementById('chip');
-  c.textContent=v.chip=='tomorrow'?'מחר':'היום';
-  if(v.on)c.href=b.dataset[v.chip];else c.removeAttribute('href');
-  c.hidden=false;
+  ['today','tomorrow'].forEach(function(k){
+    var c=document.getElementById('b-'+k);c.className='chip'+(v[k]=='cur'?' cur':'');
+    if(v[k]=='on')c.href=b.dataset[k];else c.removeAttribute('href');c.hidden=false;
+  });
 })();
 </script></body></html>
