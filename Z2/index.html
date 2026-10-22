@@ -1,0 +1,36 @@
+<!doctype html><html lang="he" dir="rtl"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>מערכת ז 2</title><style>
+:root{color-scheme:light dark;--bg:#fff;--fg:#111;--mut:#667;--card:#f3f5f8;--hi:#0a6cff}
+@media(prefers-color-scheme:dark){:root{--bg:#111418;--fg:#eee;--mut:#9aa;--card:#1c2128;--hi:#5aa2ff}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.35 system-ui,sans-serif}
+header{padding:14px 16px 4px;display:flex;justify-content:space-between;align-items:baseline}
+h1{margin:0;font-size:20px}header span{color:var(--mut);font-size:13px}
+section{margin:12px 12px;padding:10px 12px;background:var(--card);border-radius:12px}
+section.now{outline:2px solid var(--hi)}
+h2{margin:0 0 6px;font-size:17px}section.now h2{color:var(--hi)}
+ol{list-style:none;margin:0;padding:0}li{display:flex;gap:10px;padding:5px 0;border-top:1px solid #8883}
+li:first-child{border-top:0}b{min-width:1.2em}time{color:var(--mut);min-width:3em;direction:ltr;text-align:right}
+small{color:var(--mut)}em{color:#c60;font-style:normal;font-size:13px}p{margin:0;color:var(--mut)}
+
+nav{padding:0 16px 4px}.chip{display:inline-block;padding:6px 18px;border-radius:99px;font-size:15px;
+text-decoration:none;background:#8883;color:var(--mut)}a.chip[href]{background:var(--hi);color:#fff}
+[hidden]{display:none}
+</style><body data-mode="main" data-today="today/" data-tomorrow="tomorrow/"><header><h1>מערכת ז 2</h1><span>עודכן 22.10 08:26</span></header><nav><a id="chip" class="chip" hidden></a></nav><section class="day" data-d="2026-10-22"><h2>יום חמישי 22.10</h2><ol><li><b>1</b><time>08:30</time><span>אנגלית <small>עמית אלמוג</small></span></li><li><b>2</b><time>09:15</time><span>אנגלית <small>עמית אלמוג</small></span></li><li><b>3</b><time>10:15</time><span>מתמטיקה <small>ארץ קדושה ליהי</small></span></li><li><b>4</b><time>11:00</time><span>מתמטיקה <small>ארץ קדושה ליהי</small></span></li><li><b>5</b><time>12:10</time><span>כימיה <small>שני אליענה</small></span></li><li><b>6</b><time>12:55</time><span>שעת מחנך <small>עמית אלמוג</small></span></li><li><b>7</b><time>13:50</time><span>כישורי חיים <small>שמש סמדי</small></span></li></ol></section><section id="none"><p>המערכת עדיין לא פורסמה</p></section><script>
+function view(mode,t,h,have){
+  var d=new Date(t+'T00:00:00Z');d.setUTCDate(d.getUTCDate()+1);var tm=d.toISOString().slice(0,10);
+  var show=mode=='today'?t:mode=='tomorrow'?tm:(h>=14&&have[tm]?tm:t),onToday=show==t;
+  return{show:show,chip:onToday?'tomorrow':'today',on:onToday?!!have[tm]:(h<20&&!!have[t])};
+}
+(function(){
+  var p={};new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Jerusalem',year:'numeric',month:'2-digit',
+    day:'2-digit',hour:'2-digit',hourCycle:'h23'}).formatToParts(new Date()).forEach(function(x){p[x.type]=x.value});
+  var b=document.body,have={},secs=[].slice.call(document.querySelectorAll('section.day'));
+  secs.forEach(function(e){have[e.dataset.d]=1});
+  var v=view(b.dataset.mode,p.year+'-'+p.month+'-'+p.day,+p.hour,have),any=false;
+  secs.forEach(function(e){e.hidden=e.dataset.d!=v.show;if(!e.hidden)any=true});
+  document.getElementById('none').hidden=any;
+  var c=document.getElementById('chip');
+  c.textContent=v.chip=='tomorrow'?'מחר':'היום';
+  if(v.on)c.href=b.dataset[v.chip];else c.removeAttribute('href');
+  c.hidden=false;
+})();
+</script></body></html>
