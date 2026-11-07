@@ -15,7 +15,7 @@ nav{padding:0 16px 4px;display:flex;gap:8px}.chip{padding:6px 22px;border:0;bord
 font-size:15px;background:#8883;color:var(--mut)}.chip.on{background:var(--hi);color:#fff}
 .chip.cur{background:#1a9b4b;color:#fff}
 [hidden]{display:none}
-</style><body><header><h1>מערכת ז 2</h1><span>עודכן 06.11 14:15</span></header><nav><button id="b-today" class="chip" hidden>היום</button><button id="b-tomorrow" class="chip" hidden>מחר</button></nav><section class="day" data-d="2026-11-06"><h2>יום שישי 06.11</h2><p>אין שיעורים</p></section><section class="day" data-d="2026-11-08"><h2>יום ראשון 08.11</h2><p>אין שיעורים</p></section><section id="none"><p>המערכת עדיין לא פורסמה</p></section><script>
+</style><body><header><h1>מערכת ז 2</h1><span>עודכן 07.11 06:00</span></header><nav><button id="b-today" class="chip" hidden>היום</button><button id="b-tomorrow" class="chip" hidden>מחר</button></nav><section class="day" data-d="2026-11-08"><h2>יום ראשון 08.11</h2><p>אין שיעורים</p></section><section id="none"><p>המערכת עדיין לא פורסמה</p></section><script>
 function view(t,h,have,pick){
   var d=new Date(t+'T00:00:00Z');d.setUTCDate(d.getUTCDate()+1);var tm=d.toISOString().slice(0,10);
   var show=pick=='today'?t:pick=='tomorrow'?tm:(h>=14&&have[tm]?tm:t),onT=show==t;
